@@ -550,7 +550,7 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
             setClaimedReward(false);
 
             const accounts = await getCurrentAccount();
-
+ 
             const mint = await window.contract.methods.mintNFT(accounts[0], `${ipfsUrl}`).send({ from: accounts[0] })
                 .catch(() => {
                     setLoading(false);
