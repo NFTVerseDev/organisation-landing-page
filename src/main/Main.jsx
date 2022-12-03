@@ -24,13 +24,20 @@ export default function Main({ pageData }) {
         name: name,
         description: description,
     }
+    const assetType= urlParams.get('assetType');
+    const s3url= urlParams.get('s3url');
+
+    const assetId= urlParams.get('assetId');
+
 
     const dark = appCtx.isDarkMode;
     const navigate = useNavigate();
     const { nfts } = useFetchNf();
     console.log(pageData)
+    localStorage.setItem('login',false);
     const themeColor = localStorage.getItem('themeColor') === null ? { backgroundColor: 'white', color: 'white' } : { backgroundColor: localStorage.getItem('themeColor'), color: 'white' }
     return (
+        <>
         <div className="flex flex-col lg:flex-row justify-around ">
             <div className="banner_text justify-center items-center xl:items-start" >
                 <h1 className="title">{pageData?.title}</h1>
@@ -50,10 +57,16 @@ export default function Main({ pageData }) {
                 </span>
             </div>
             <NFT imgSrc={pageData?.bannerImage} />
-            <ClaimYourRewar
-                claimReward={claimReward} setClaimedReward={setClaimedReward} ipfsUrl={ipfsUrl} nftData={nftData} ipfsHash={ipfsHash}
-            />
+            
         </div>
+        <ClaimYourRewar
+        claimReward={claimReward} setClaimedReward={setClaimedReward} 
+        ipfsUrl={ipfsUrl} nftData={nftData} ipfsHash={ipfsHash}
+        assetType={assetType}
+        s3url={s3url}
+        assetId={assetId}
+    />
+    </>
         // </div>
     );
 }

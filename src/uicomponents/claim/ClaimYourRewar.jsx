@@ -14,7 +14,7 @@ import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../navbar/Navbar';
 
-export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData,ipfsHash }) => {
+export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData,ipfsHash,assetType,s3url,assetId }) => {
 //   const [claimReward, setClaimedReward] = useState(false);
 //     const queryString = window.location.search;
 //   console.log(queryString);
@@ -34,7 +34,8 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
     const appCtx = useSelector((state) => state.app);
     const [once, setOnce] = useState(true);
     if (once)
-        setClaimedReward(localStorage.getItem('claimreward') === 'undefined' ? true : localStorage.getItem('claimreward') === 'true' ? true : false)
+        setClaimedReward(true)
+        // setClaimedReward(localStorage.getItem('claimreward') ===undefined ? true : localStorage.getItem('claimreward') === 'true' ? true : false)
     else
         setClaimedReward(false)
     console.log(claimReward);
@@ -550,7 +551,7 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
 
             const accounts = await getCurrentAccount();
 
-            const mint = await window.contract.methods.mintNFT(accounts[0], `ipfs://${appCtx.paymentData?.ipfsUrl}`).send({ from: accounts[0] })
+            const mint = await window.contract.methods.mintNFT(accounts[0], `${ipfsUrl}`).send({ from: accounts[0] })
                 .catch(() => {
                     setLoading(false);
                     toast("unable to claim your reward !!");
@@ -570,7 +571,6 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
     return (
         // http://localhost:3001/?ipfsUrl=QmVjdiiZBggtEAPQydzWkxC3jUH9MRtShh8hyswSgZWSmP&name=hello&description=wkjrbgkjwbgjbjg
         <div>
-            <Navbar />
             <div className='w-[100%] px-[30px] flex justify-around items-center my-[20px]'>
                 <div className='w-[30%]'>
                     {ipfsHash ?
@@ -598,11 +598,11 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
                     </div>
                     {claimReward ?
                         <CustomButton primary={false}
-                            onClick={() => { localStorage.getItem('login') !== 'false' ? loadWeb3() : navigate('/loginotp') }}
-                            // disabled={!accountAddress ? false : true}
+                            onClick={() => { appCtx.isLoggedIn !== false ? loadWeb3() : navigate('/loginotp') }}
+                            // disabled={!accountAddress ?"false": true}
                             className='cursor-pointer w-[80%] flex justify-center items-center'
                         >
-                            {localStorage.getItem('login') !== 'false' ? <>
+                            {appCtx.isLoggedIn !== false ? <>
                                 Claim NFT {isloading ? < CircularProgress className='ml-[10px]' /> : ''}
                             </>
                                 :
@@ -644,17 +644,17 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
                                         <div>
                                             <spam className="font-semibold">ipfsHash</spam>
                                             <EastOutlined />
-                                            {appCtx.paymentData.ipfsHash}
+                                            {ipfsHash}
                                         </div>
                                         <div>
                                             <spam className="font-semibold">assetId</spam>
                                             <EastOutlined />
-                                            {appCtx.paymentData.assetId}
+                                            {assetId}
                                         </div>
                                         <div>
                                             <spam className="font-semibold">s3url</spam>
                                             <EastOutlined />
-                                            {appCtx.paymentData.s3url}
+                                            {s3url}
                                         </div>
                                         <div>
                                             <spam className="font-semibold text-[]">ipfsUrl</spam>
@@ -664,7 +664,7 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
                                         <div>
                                             <spam className="font-semibold">assetType</spam>
                                             <EastOutlined />
-                                            {appCtx.paymentData.assetType}
+                                            {assetType}
                                         </div>
                                     </div>
                                 </span>
@@ -701,12 +701,12 @@ export const ClaimYourRewar = ({ claimReward, setClaimedReward, ipfsUrl, nftData
                                         <div>
                                             <spam className="font-semibold">Name</spam>
                                             <EastOutlined />
-                                            {appCtx.nftData.name}
+                                            {nftData.name}
                                         </div>
                                         <div>
                                             <spam className="font-semibold">Description</spam>
                                             <EastOutlined />
-                                            {appCtx.nftData.description}
+                                            {nftData.description}
                                         </div>
                                     </div>
                                 </span>

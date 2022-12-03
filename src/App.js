@@ -15,16 +15,25 @@ function App() {
   const urlParams = new URLSearchParams(queryString);
   const ipfsUrl = urlParams.get('ipfsUrl');
   const name = urlParams.get('name');
-  const description = urlParams.get('description')
+  const description = urlParams.get('description');
+  const ipfsHash = urlParams.get('ipfsHash');
   const nftData = {
-    name: name,
-    description: description,
+      name: name,
+      description: description,
   }
+  const assetType= urlParams.get('assetType');
+  const s3url= urlParams.get('s3url');
+
+  const assetId= urlParams.get('assetId');
   return <>
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path="/loginotp" element={<LoginOtp />} />
+        <Route path="/loginotp" element={<LoginOtp  claimReward={claimReward} setClaimedReward={setClaimedReward} 
+        ipfsUrl={ipfsUrl} nftData={nftData} ipfsHash={ipfsHash}
+        assetType={assetType}
+        s3url={s3url}
+        assetId={assetId}/>} />
         <Route path="/claimreward" element={<ClaimYourRewar/>} />
       </Routes>
     </BrowserRouter>

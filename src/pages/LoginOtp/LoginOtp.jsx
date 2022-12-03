@@ -12,7 +12,7 @@ import useHttp from "../../hooks/use-http";
 import { appActions } from "../../context/app-slice";
 import WhiteCustomButton from "../../ui/WhiteCustomButton";
 
-export const LoginOtp = () => {
+export const LoginOtp = ({ claimReward, setClaimedReward, ipfsUrl, nftData,ipfsHash,assetType,s3url,assetId }) => {
     let navigate = useNavigate();
     const dispatch = useDispatch();
     const [loader, setLoader] = useState(false);
@@ -135,11 +135,11 @@ export const LoginOtp = () => {
                 dispatch(appActions.login(undefined));
                 setLoader(false)
                 // dispatch(appActions.setClaimReward(true));
+                localStorage.setItem('login',true);
                 
-                navigate('/');
+                navigate(`/?ipfsUrl=${ipfsUrl}&name=${nftData.name}&description=${nftData.description}&ipfsHash=${ipfsHash}&assetType=${assetType}&assetId=${assetId}&s3url=${s3url}`);
                 console.log(window.location.search);
                 // localStorage.setItem('claimreward',true);
-                localStorage.setItem('login',true);
             }, (error) => {
                 toast("OTP entered is incorrect !");
                 setLoader(false)
@@ -199,7 +199,7 @@ export const LoginOtp = () => {
             <div className="flex flex-col lg:flex-row w-[100%] justify-center items-center" style={{ color:"black" }}>
             <div className="lg:w-[500px] w-[92%] h-[60%] lg:h-[500px]">
             {/* {(!true) ? */}
-                <img src={'/images/loginimage.jpg'} alt='logo' className="w-[100%] h-[100%]" />
+                <img src={'/loginimage.jpg'} alt='logo' className="w-[100%] h-[100%]" />
                 {/* :
                 <div className="flex justify-center items-center h-[70%]"><CircularProgress /></div>
             } */}
